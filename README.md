@@ -1,4 +1,4 @@
-## [VERSIJA 0.1](https://github.com/DeividasRo/OP-Uzduotis/releases/tag/v0.1)
+## VERSIJA 0.1
 
 **Programa nuskaito vartotojo įvedamą informaciją apie kiekvieną studentą ir išveda rezultatų suvestinę**
 
