@@ -12,3 +12,8 @@
 
 -Yra pateikti du .cpp failai, viename jų (main_ndC.cpp) namų darbų pažymiai saugomi dinaminiame C masyve, kitame (main.cpp) namų darbų pažymiai saugomi vektoriuje.
 
+## VERSIJA 0.1a
+
+-Pakeistas pažymių generavimas, dabar visi pažymiai generuojami iš karto, pasirinkus norimą pažymių kiekį.
+
+-Įvedus nelogišką pažymį, vartotojo paprašoma jį įvesti iš naujo.
