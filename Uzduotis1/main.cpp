@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <numeric>
 #include <algorithm>
+#include <time.h>
 using namespace std;
 
 struct Studentas
@@ -12,12 +13,18 @@ struct Studentas
 	string vardas, pavarde;
 	vector<int> nd;
 	int egz = 0;
-	double galutinis;
+	double galutinis = 0;
 };
+
+int SugeneruotiPazymi()
+{
+	return rand() % 11;
+}
 
 bool YraSveikasisSkaicius(string x) // tikrina ar visi eilutes simboliai yra skaitmenys
 {
-	if (!isdigit(x[0]) && x[0] != '-') return false;
+	if (!isdigit(x[0]) && x[0] != '-')
+		return false;
 	for (int i = 1; i < x.length(); i++)
 	{
 		if (!isdigit(x[i]))
@@ -26,59 +33,71 @@ bool YraSveikasisSkaicius(string x) // tikrina ar visi eilutes simboliai yra ska
 	return true;
 }
 
-string SugeneruotiPazymi()
+int TinkamoSveikojoSkaiciausIvedimas()
 {
-	return to_string(rand() % 11);
-}
-
-void NetinkamosIvestiesPerspejimas()
-{
-	cout << "Netinkama ivestis. Prasome ivesti sveikaji skaiciu: ";
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-}
-
-void TinkamoSveikojoSkaiciausIvedimas(string& x)
-{
-	cin >> x;
-	while (x != "r" && !YraSveikasisSkaicius(x))
+	string s;
+	cin >> s;
+	while (!YraSveikasisSkaicius(s))
 	{
-		NetinkamosIvestiesPerspejimas();
-		cin >> x;
+		cout << "Netinkama ivestis. Prasome ivesti sveikaji skaiciu: ";
+		cin >> s;
 	}
+	return stoi(s);
 }
 
-void StudentoIvedimas(Studentas& s)
+void StudentoIvedimas(Studentas &s)
 {
 	cout << "Iveskite varda: ";
 	cin >> s.vardas;
 	cout << "Iveskite pavarde: ";
 	cin >> s.pavarde;
-	cout << "\n(Noredami sugeneruoti atsitiktini skaiciu, iveskite raide 'r')\n(Noredami nutraukti ivedima, iveskite neigiama skaiciu)" << endl;
-	cout << "\nSuveskite namu darbu pazymius. " << endl;
-	string x = "0";
-	while (stoi(x) >= 0 || s.nd.size() == 0)
+
+	int x = 0;
+	cout << "Pasirinkite pazymiu ivedimo buda: " << endl;
+	cout << "0 - automatinis pazymiu ivedimas" << endl;
+	cout << "1 - rankinis pazymiu ivedimas" << endl;
+	cin >> x;
+	if (x == 1) // pazymiu ivedimas rankiniu budu
 	{
-		cout << "Iveskite " << s.nd.size() + 1 << " pazymi: ";
-		TinkamoSveikojoSkaiciausIvedimas(x);
-		if (x == "r")
-			x = SugeneruotiPazymi();
-		if (stoi(x) >= 0)
-			s.nd.push_back(stoi(x)); // stoi - string paverciamas i int
+		cout << "\nSuveskite namu darbu pazymius. (Noredami nutraukti ivedima, iveskite neigiama arba didesni uz 10 skaiciu)" << endl;
+		while (true)
+		{
+			cout << "Iveskite " << s.nd.size() + 1 << " pazymi: ";
+			x = TinkamoSveikojoSkaiciausIvedimas();
+			if (x >= 0 && x <= 10)
+				s.nd.push_back(x);
+			else if (s.nd.size() != 0)
+				break;
+		}
+		cout << "Iveskite gauta egzamino rezultata: ";
+		while (true)
+		{
+			x = TinkamoSveikojoSkaiciausIvedimas();
+			if (x < 0)
+				cout << "Egzamino rezultatas turi buti teigiamas: ";
+			else if (x > 10)
+				cout << "Egzamino rezultatas turi buti nuo 0 iki 10: ";
+			else
+				break;
+		}
+		s.egz = x;
 	}
-	cout << "Iveskite gauta egzamino rezultata: ";
-	while (stoi(x) < 0)
+	else // pazymiu generavimas
 	{
-		TinkamoSveikojoSkaiciausIvedimas(x);
-		if (x == "r")
-			x = SugeneruotiPazymi();
-		if (stoi(x) < 0)
-			cout << "Egzamino rezultatas turi buti teigiamas: ";
+		cout << "Iveskite norimu sugeneruoti pazymiu kieki: " << endl;
+		while (x <= 0)
+		{
+			x = TinkamoSveikojoSkaiciausIvedimas();
+			if (x <= 0)
+				cout << "Netinkama ivestis. Iveskite teigiama sveikaji skaiciu: ";
+		}
+		for (int i = 0; i < x; i++)
+			s.nd.push_back(SugeneruotiPazymi());
+		s.egz = SugeneruotiPazymi();
 	}
-	s.egz = stoi(x);
 }
 
-void IvestiSkaiciavimoBuda(string& skaiciavimo_budas) // vartotojas paklausiamas iraso norima skaiciavimo buda (vidurki arba mediana)
+void IvestiSkaiciavimoBuda(string &skaiciavimo_budas) // vartotojas paklausiamas iraso norima skaiciavimo buda (vidurki arba mediana)
 {
 	cout << "\nKokiu budu apskaiciuoti galutini bala?" << endl;
 	cout << "v - Vidurkis" << endl;
@@ -92,14 +111,14 @@ void IvestiSkaiciavimoBuda(string& skaiciavimo_budas) // vartotojas paklausiamas
 	}
 }
 
-void GalutinioApskaiciavimasVidurkiu(Studentas& s)
+void GalutinioApskaiciavimasVidurkiu(Studentas &s)
 {
 	double pazymiu_suma = 0;
 	pazymiu_suma = accumulate(s.nd.begin(), s.nd.end(), 0);
 	s.galutinis = 0.4 * pazymiu_suma / s.nd.size() + 0.6 * s.egz;
 }
 
-void GalutinioApskaiciavimasMediana(Studentas& s)
+void GalutinioApskaiciavimasMediana(Studentas &s)
 {
 	double mediana = 0;
 	sort(s.nd.begin(), s.nd.end());
@@ -112,13 +131,14 @@ void GalutinioApskaiciavimasMediana(Studentas& s)
 
 void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
 {
-	cout << "\n" << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-		<< galutinis_budas << endl;
+	cout << "\n"
+		 << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
+		 << galutinis_budas << endl;
 	cout << string(45, '-') << endl;
 	for (int i = 0; i < studentai.size(); i++)
 	{
 		cout << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << fixed
-			<< setprecision(2) << studentai[i].galutinis;
+			 << setprecision(2) << studentai[i].galutinis;
 		cout << endl;
 	}
 }
@@ -128,13 +148,13 @@ int main()
 	srand(time(NULL));
 	vector<Studentas> studentai;
 	string skaiciavimo_budas = "v";
-	string testi_ivedima = "taip";
-	while (testi_ivedima == "taip")
+	string testi_ivedima = "t";
+	while (testi_ivedima == "t")
 	{
 		Studentas s;
 		StudentoIvedimas(s);
 		studentai.push_back(s);
-		cout << "\nJei norite prideti dar viena studenta, irasykite zodi 'taip': ";
+		cout << "\nJei norite prideti dar viena studenta, irasykite 't': ";
 		cin >> testi_ivedima;
 	}
 	IvestiSkaiciavimoBuda(skaiciavimo_budas);
