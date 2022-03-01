@@ -154,6 +154,7 @@ void StudentoIvedimas(Studentas &s)
 	cout << "Pasirinkite pazymiu ivedimo buda: " << endl;
 	cout << "0 - automatinis pazymiu ivedimas" << endl;
 	cout << "1 - rankinis pazymiu ivedimas" << endl;
+	cin >> x;
 	while (x != 1 && x != 0)
 	{
 		cout << "Nera tokio pasirinkimo. Iveskite teisinga skaiciu." << endl;
@@ -290,6 +291,7 @@ void RankinisIvedimas()
 		cout << "\nJei norite prideti dar viena studenta, irasykite 't': ";
 		cin >> testi_ivedima;
 	}
+	RusiuotiPagalVarda(studentai);
 	IvestiSkaiciavimoBuda(skaiciavimo_budas);
 
 	if (skaiciavimo_budas == "m")
@@ -317,6 +319,7 @@ int main()
 	cout << "0 - skaitymas is failo" << endl;
 	cout << "1 - rankinis ivedimas" << endl;
 	int x = -1;
+	cin >> x;
 	while (x != 1 && x != 0)
 	{
 		cout << "Nera tokio pasirinkimo. Iveskite teisinga skaiciu." << endl;
