@@ -83,35 +83,7 @@ void GalutinioApskaiciavimasMediana(Studentas &s)
 	s.galutinis_med = 0.4 * mediana + 0.6 * s.egz;
 }
 
-string bufer_nusk(string read_name)
-{
-	vector<string> splited;
-	string line;
-	stringstream my_buffer;
-
-	ifstream open_f(read_name);
-	my_buffer << open_f.rdbuf();
-	open_f.close();
-	while (my_buffer)
-	{
-		if (!my_buffer.eof())
-		{
-			getline(my_buffer, line);
-			splited.push_back(line);
-		}
-		else
-			break;
-	}
-	string output;
-	for (std::string &a : splited)
-		(a.compare(*splited.rbegin()) != 0)
-			? output += a + "\n"
-			: output += a;
-	splited.clear();
-	return output;
-}
-
-void SugeneruotiVardaPavarde(Studentas &s)
+/*void SugeneruotiVardaPavarde(Studentas &s)
 {
 	mt19937 mt(static_cast<long unsigned int>(chrono::high_resolution_clock::now().time_since_epoch().count()));
 	uniform_int_distribution<int> dist(0, 9);
@@ -130,20 +102,19 @@ void SugeneruotiVardaPavarde(Studentas &s)
 		s.pavarde = pavardes_m[dist(mt)];
 		break;
 	};
+}*/
+
+bool LygintiPagalPavardeDidejanciai(Studentas a, Studentas b)
+{
+	return a.pavarde < b.pavarde;
 }
 
-bool LygintiPagalVardaDidejanciai(Studentas a, Studentas b)
+void RusiuotiPagalPavarde(vector<Studentas> &studentai)
 {
-	return a.vardas < b.vardas;
-}
-
-void RusiuotiPagalVarda(vector<Studentas> &studentai)
-{
-	sort(studentai.begin(), studentai.end(), LygintiPagalVardaDidejanciai);
+	sort(studentai.begin(), studentai.end(), LygintiPagalPavardeDidejanciai);
 }
 
 void StudentoIvedimas(Studentas &s)
-
 {
 	cout << "Iveskite varda: ";
 	cin >> s.vardas;
@@ -207,74 +178,85 @@ void StudentoIvedimas(Studentas &s)
 
 void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
 {
+	stringstream my_buffer;
 	if (galutinis_budas == "v")
 	{
-		cout << "\n"
-			 << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-			 << "Galutinis (Vid.)" << endl;
-		cout << string(45, '-') << endl;
+		my_buffer << "\n"
+				  << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
+				  << "Galutinis (Vid.)" << endl;
+		my_buffer << string(45, '-') << endl;
 		for (int i = 0; i < studentai.size(); i++)
 		{
-			cout << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << fixed
-				 << setprecision(2) << studentai[i].galutinis_vid;
-			cout << endl;
+			my_buffer << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << fixed
+					  << setprecision(2) << studentai[i].galutinis_vid << endl;
 		}
+		cout << my_buffer.str();
 	}
 	else if (galutinis_budas == "m")
 	{
-		cout << "\n"
-			 << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-			 << "Galutinis (Med.)" << endl;
-		cout << string(45, '-') << endl;
+		my_buffer << "\n"
+				  << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
+				  << "Galutinis (Med.)" << endl;
+		my_buffer << string(45, '-') << endl;
 		for (int i = 0; i < studentai.size(); i++)
 		{
-			cout << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << fixed
-				 << setprecision(2) << studentai[i].galutinis_med;
-			cout << endl;
+			my_buffer << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << fixed
+					  << setprecision(2) << studentai[i].galutinis_med << endl;
 		}
+		cout << my_buffer.str();
 	}
 	else
 	{
-		cout << "\n"
-			 << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-			 << "Galutinis (Vid.) Galutinis (Med.)" << endl;
-		cout << string(60, '-') << endl;
+		ofstream open_of("Rezultatai.txt");
+		my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
+				  << "Galutinis (Vid.) Galutinis (Med.)" << endl;
+		my_buffer << string(63, '-') << endl;
 		for (int i = 0; i < studentai.size(); i++)
 		{
-			cout << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << setw(17) << fixed
-				 << setprecision(2) << studentai[i].galutinis_vid << studentai[i].galutinis_med;
-			cout << endl;
+			my_buffer << left << setw(15) << studentai[i].pavarde << setw(15) << studentai[i].vardas << setw(17) << fixed
+					  << setprecision(2) << studentai[i].galutinis_vid << studentai[i].galutinis_med << endl;
 		}
+		open_of << my_buffer.str();
+		cout << "Duomenys isvesti i Rezultatai.txt faila." << endl;
 	}
+	my_buffer.clear();
 }
 
 void SkaitymasIsFailo()
 {
 	vector<Studentas> studentai;
-	string duomenys = bufer_nusk("Studentai10000.txt");
-	size_t pask_nd_poz = duomenys.find_last_of("ND");
-	int pazymiu_kiekis = stoi(duomenys.substr(pask_nd_poz + 1, duomenys.find_first_of("Egz.") - pask_nd_poz - 1));
+	int pazymiu_kiekis = -3;
 
-	duomenys.erase(0, duomenys.find_first_of("Egz.") + 4);
+	stringstream my_buffer;
+	ifstream open_if("kursiokai.txt");
+	my_buffer << open_if.rdbuf();
+	open_if.close();
 
-	istringstream iss(duomenys);
-	while (iss)
+	string zodis;
+	while (zodis != "Egz.")
+	{
+		my_buffer >> zodis;
+		pazymiu_kiekis++;
+	}
+
+	while (my_buffer)
 	{
 		Studentas s;
-		iss >> s.vardas >> s.pavarde;
-		SugeneruotiVardaPavarde(s);
+		my_buffer >> s.vardas >> s.pavarde;
+		if (s.vardas == "" && s.pavarde == "")
+			break;
 		for (int i = 0; i < pazymiu_kiekis; i++)
 		{
 			int paz;
-			iss >> paz;
+			my_buffer >> paz;
 			s.nd.push_back(paz);
 		}
-		iss >> s.egz;
+		my_buffer >> s.egz;
 		GalutinioApskaiciavimasMediana(s);
 		GalutinioApskaiciavimasVidurkiu(s);
 		studentai.push_back(s);
 	}
-	RusiuotiPagalVarda(studentai);
+	RusiuotiPagalPavarde(studentai);
 	Isvedimas(studentai, "");
 }
 
@@ -291,7 +273,7 @@ void RankinisIvedimas()
 		cout << "\nJei norite prideti dar viena studenta, irasykite 't': ";
 		cin >> testi_ivedima;
 	}
-	RusiuotiPagalVarda(studentai);
+	RusiuotiPagalPavarde(studentai);
 	IvestiSkaiciavimoBuda(skaiciavimo_budas);
 
 	if (skaiciavimo_budas == "m")
