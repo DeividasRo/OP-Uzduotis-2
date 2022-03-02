@@ -19,6 +19,9 @@
 -Įvedus nelogišką pažymį, vartotojo paprašoma jį įvesti iš naujo.
 
 ## VERSIJA 0.2
-Pridėta galimybė nuskaityti studentų duomenis iš failo.
-Studentai išvedami pagal vardą, abėcėliškai didėjančia tvarka.
-Šioje versijoje visiem studentam suteikiami atsitiktiniai vardai ir pavardės.
+
+-Pridėta galimybė nuskaityti studentų duomenis iš failo.
+
+-Studentai išvedami pagal vardą, abėcėliškai didėjančia tvarka.
+
+-Šioje versijoje visiem studentam suteikiami atsitiktiniai vardai ir pavardės.
