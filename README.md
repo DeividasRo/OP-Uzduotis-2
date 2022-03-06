@@ -25,3 +25,10 @@
 -Studentai išvedami pagal vardą, abėcėliškai didėjančia tvarka.
 
 -Šioje versijoje visiem studentam suteikiami atsitiktiniai vardai ir pavardės.
+
+## VERSIJA 0.3
+
+-Sukurti atskiri failai studento funkcijom (studentu_suvestine.cpp), bendrom skaiciavimu funkcijom (skaiciavimai.cpp) ir pagrindinis failas (main.cpp).
+
+-Pridetas isimciu valdymas patikrinti ar duomenu failas egzistuoja.
+
