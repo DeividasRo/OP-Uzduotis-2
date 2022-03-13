@@ -129,7 +129,7 @@ void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
     }
     else
     {
-        ofstream open_of("Rezultatai.txt");
+        ofstream fo("Rezultatai.txt");
         my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
                   << "Galutinis (Vid.) Galutinis (Med.)" << endl;
         my_buffer << string(63, '-') << endl;
@@ -138,8 +138,9 @@ void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
             my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << setw(17) << fixed
                       << setprecision(2) << studentas.galutinis_vid << studentas.galutinis_med << endl;
         }
-        open_of << my_buffer.str();
+        fo << my_buffer.str();
         cout << "Duomenys isvesti i Rezultatai.txt faila." << endl;
+        fo.close();
     }
     my_buffer.clear();
 }
@@ -149,10 +150,10 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
     int pazymiu_kiekis = -3;
 
     stringstream my_buffer;
-    ifstream open_if(failo_vardas);
+    ifstream fi(failo_vardas);
     try
     {
-        if (open_if.fail())
+        if (fi.fail())
             throw runtime_error("Nepavyko atidaryti duomenu failo.");
     }
     catch (exception &ex)
@@ -160,8 +161,9 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
         cout << ex.what();
         exit(0);
     }
-    my_buffer << open_if.rdbuf();
-    open_if.close();
+
+    my_buffer << fi.rdbuf();
+    fi.close();
 
     string zodis;
     while (zodis != "Egz.")
@@ -232,4 +234,25 @@ void RankinisIvedimas(vector<Studentas> &studentai)
         }
         Isvedimas(studentai, "v");
     }
+}
+
+void GeneruotiDuomenuFaila(int studentu_kiekis, int nd_kiekis)
+{
+    stringstream my_buffer;
+    ofstream fo("studentai" + to_string(studentu_kiekis) + ".txt");
+
+    my_buffer << "Vardas Pavarde";
+    for (int i = 0; i < nd_kiekis; i++)
+        my_buffer << " ND" << i + 1;
+    my_buffer << " Egz." << endl;
+
+    for (int i = 0; i < studentu_kiekis; i++)
+    {
+        my_buffer << "Vardas" << i + 1 << " Pavarde" << i + 1;
+        for (int j = 0; j < nd_kiekis + 1; j++)
+            my_buffer << " " << SugeneruotiPazymi();
+        my_buffer << endl;
+    }
+    fo << my_buffer.str();
+    fo.close();
 }

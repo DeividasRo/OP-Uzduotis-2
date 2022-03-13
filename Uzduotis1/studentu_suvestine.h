@@ -5,8 +5,6 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
-#include <numeric>
-#include <algorithm>
 #include <fstream>
 using namespace std;
 
@@ -27,3 +25,4 @@ void Isvedimas(vector<Studentas>, string);
 void StudentoIvedimas(Studentas &);
 void SkaitymasIsFailo(vector<Studentas> &, string);
 void RankinisIvedimas(vector<Studentas> &);
+void GeneruotiDuomenuFaila(int, int);
