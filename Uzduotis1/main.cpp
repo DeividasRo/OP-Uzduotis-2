@@ -2,7 +2,7 @@
 
 int main()
 {
-	vector<Studentas> studentai;
+	vector<Studentas> studentai, vargsiukai, moksliukai;
 	cout << "Pasirinkite duomenu ivedimo buda: " << endl;
 	cout << "0 - skaitymas is failo" << endl;
 	cout << "1 - rankinis ivedimas" << endl;
@@ -28,7 +28,11 @@ int main()
 		cout << "10000000 studentu failo nd kiekis: ";
 		cin >> x;
 		GeneruotiDuomenuFaila(10000000, x);
-		// SkaitymasIsFailo(studentai, "studentai10000.txt");
+		SkaitymasIsFailo(studentai, "studentai10000000.txt");
+		PadalintiStudentusKategorijomis(studentai, vargsiukai, moksliukai);
+
+		IsvedimasIFaila(vargsiukai, "vargsiukai.txt");
+		IsvedimasIFaila(moksliukai, "moksliukai.txt");
 	}
 
 	system("pause");
