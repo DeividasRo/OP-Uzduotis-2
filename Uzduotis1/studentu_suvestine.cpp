@@ -43,15 +43,15 @@ void StudentoIvedimas(Studentas &s)
 
     int x = -1;
     cout << "Pasirinkite pazymiu ivedimo buda: " << endl;
-    cout << "0 - automatinis pazymiu ivedimas" << endl;
-    cout << "1 - rankinis pazymiu ivedimas" << endl;
-    cin >> x;
-    while (x != 1 && x != 0)
+    cout << "1 - automatinis pazymiu ivedimas" << endl;
+    cout << "2 - rankinis pazymiu ivedimas" << endl;
+    x = TinkamoSveikojoSkaiciausIvedimas();
+    while (x != 1 && x != 2)
     {
         cout << "Nera tokio pasirinkimo. Iveskite teisinga skaiciu." << endl;
         cin >> x;
     }
-    if (x == 1) // pazymiu ivedimas rankiniu budu
+    if (x == 2) // pazymiu ivedimas rankiniu budu
     {
         cout << "\nSuveskite namu darbu pazymius. (Noredami nutraukti ivedima, iveskite neigiama arba didesni uz 10 skaiciu)" << endl;
         while (true)
@@ -79,6 +79,7 @@ void StudentoIvedimas(Studentas &s)
     else // pazymiu generavimas
     {
         cout << "Iveskite norimu sugeneruoti pazymiu kieki: ";
+        x = TinkamoSveikojoSkaiciausIvedimas();
         while (x <= 0)
         {
             x = TinkamoSveikojoSkaiciausIvedimas();

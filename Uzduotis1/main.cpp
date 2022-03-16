@@ -8,14 +8,13 @@ int main()
 	while (true)
 	{
 		cout << "\nPasirinkite norima atlikti veiksma: " << endl;
-		cout << "0 - rankinis duomenu ivedimas" << endl;
-		cout << "1 - generuoti duomenu faila" << endl;
-		cout << "2 - isvesti apdorotus duomenis i failus" << endl;
+		cout << "1 - rankinis duomenu ivedimas" << endl;
+		cout << "2 - generuoti duomenu faila" << endl;
 		cout << "3 - isvesti apdorotus duomenis i failus" << endl;
-		cin >> x;
-		if (x == 0)
+		x = TinkamoSveikojoSkaiciausIvedimas();
+		if (x == 1)
 			RankinisIvedimas(studentai);
-		else if (x == 1)
+		else if (x == 2)
 		{
 			cout << "Iveskite norimu sugeneruoti duomenu failu namu darbu kieki." << endl;
 			cin >> x;
@@ -31,7 +30,7 @@ int main()
 				}
 			}
 		}
-		else if (x == 2)
+		else if (x == 3)
 		{
 			using namespace std::chrono;
 			for (int i = 1000; i <= 10000000; i *= 10)
@@ -53,9 +52,9 @@ int main()
 
 				start = high_resolution_clock::now();
 				IsvedimasIFaila(vargsiukai, "vargsiukai" + to_string(i) + ".txt");
-				cout << i << " studentu isvedimo i vargsiukai.txt faila laikas: " << diff.count() << " s" << endl;
 				end = high_resolution_clock::now();
 				diff = end - start;
+				cout << i << " studentu isvedimo i vargsiukai.txt faila laikas: " << diff.count() << " s" << endl;
 
 				start = high_resolution_clock::now();
 				IsvedimasIFaila(moksliukai, "moksliukai" + to_string(i) + ".txt");
