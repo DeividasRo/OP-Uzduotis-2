@@ -28,7 +28,18 @@
 
 ## VERSIJA 0.3
 
--Sukurti atskiri failai studento funkcijom (studentu_suvestine.cpp), bendrom skaiciavimu funkcijom (skaiciavimai.cpp) ir pagrindinis failas (main.cpp).
+-Sukurti atskiri failai studento funkcijom (studentu_suvestine.cpp), bendrom skaičiavimų funkcijom (skaiciavimai.cpp) ir pagrindinis failas (main.cpp).
 
--Pridetas isimciu valdymas patikrinti ar duomenu failas egzistuoja.
+-Pridėtas išimcių valdymas patikrinti ar duomenu failas egzistuoja.
+
+## VERSIJA 0.4
+
+-Duomenu failai gali būti generuojami.
+
+-Automatiškai generuojami vartotojo nustatyto dydžio studentų irašų duomenų failai.
+
+-Duomenų failo generavimo, apdorojimo ir išvedimo laikas matuojamas ir išvedamas komandinėje eilutėje:
+
+![image](https://user-images.githubusercontent.com/99316667/158587079-75147900-505f-47ae-8e60-902c2170be5c.png)
+
 
