@@ -1,9 +1,10 @@
 #include "skaiciavimai.h"
 
-int SugeneruotiPazymi()
+uniform_int_distribution<int> dist(0, 10);
+mt19937 mt(static_cast<long unsigned int>(high_resolution_clock::now().time_since_epoch().count()));
+
+int GeneruotiPazymi()
 {
-    mt19937 mt(static_cast<long unsigned int>(chrono::high_resolution_clock::now().time_since_epoch().count()));
-    uniform_int_distribution<int> dist(0, 10);
     return dist(mt);
 }
 

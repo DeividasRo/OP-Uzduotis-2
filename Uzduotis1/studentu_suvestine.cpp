@@ -12,16 +12,6 @@ bool YraSveikasisSkaicius(string x) // tikrina ar visi eilutes simboliai yra ska
     return true;
 }
 
-bool LygintiPagalPavardeDidejanciai(Studentas a, Studentas b)
-{
-    return a.pavarde < b.pavarde;
-}
-
-void RusiuotiStudentusPagalPavarde(vector<Studentas> &studentai)
-{
-    sort(studentai.begin(), studentai.end(), LygintiPagalPavardeDidejanciai);
-}
-
 int TinkamoSveikojoSkaiciausIvedimas()
 {
     string s;
@@ -34,6 +24,16 @@ int TinkamoSveikojoSkaiciausIvedimas()
     return stoi(s);
 }
 
+bool LygintiPagalPavardeDidejanciai(Studentas a, Studentas b)
+{
+    return a.pavarde < b.pavarde;
+}
+
+void RusiuotiStudentusPagalPavarde(vector<Studentas> &studentai)
+{
+    sort(studentai.begin(), studentai.end(), LygintiPagalPavardeDidejanciai);
+}
+
 void StudentoIvedimas(Studentas &s)
 {
     cout << "Iveskite varda: ";
@@ -43,15 +43,15 @@ void StudentoIvedimas(Studentas &s)
 
     int x = -1;
     cout << "Pasirinkite pazymiu ivedimo buda: " << endl;
-    cout << "0 - automatinis pazymiu ivedimas" << endl;
-    cout << "1 - rankinis pazymiu ivedimas" << endl;
-    cin >> x;
-    while (x != 1 && x != 0)
+    cout << "1 - automatinis pazymiu ivedimas" << endl;
+    cout << "2 - rankinis pazymiu ivedimas" << endl;
+    x = TinkamoSveikojoSkaiciausIvedimas();
+    while (x != 1 && x != 2)
     {
         cout << "Nera tokio pasirinkimo. Iveskite teisinga skaiciu." << endl;
         cin >> x;
     }
-    if (x == 1) // pazymiu ivedimas rankiniu budu
+    if (x == 2) // pazymiu ivedimas rankiniu budu
     {
         cout << "\nSuveskite namu darbu pazymius. (Noredami nutraukti ivedima, iveskite neigiama arba didesni uz 10 skaiciu)" << endl;
         while (true)
@@ -79,6 +79,7 @@ void StudentoIvedimas(Studentas &s)
     else // pazymiu generavimas
     {
         cout << "Iveskite norimu sugeneruoti pazymiu kieki: ";
+        x = TinkamoSveikojoSkaiciausIvedimas();
         while (x <= 0)
         {
             x = TinkamoSveikojoSkaiciausIvedimas();
@@ -88,15 +89,15 @@ void StudentoIvedimas(Studentas &s)
         cout << "Pazymiai: ";
         for (int i = 0; i < x; i++)
         {
-            s.nd.push_back(SugeneruotiPazymi());
+            s.nd.push_back(GeneruotiPazymi());
             cout << s.nd[i] << " ";
         }
-        s.egz = SugeneruotiPazymi();
+        s.egz = GeneruotiPazymi();
         cout << "\nEgzaminas: " << s.egz << endl;
     }
 }
 
-void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
+void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
 {
     stringstream my_buffer;
     if (galutinis_budas == "v")
@@ -127,41 +128,38 @@ void Isvedimas(vector<Studentas> studentai, string galutinis_budas)
 
         cout << my_buffer.str();
     }
-    else
-    {
-        ofstream open_of("Rezultatai.txt");
-        my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-                  << "Galutinis (Vid.) Galutinis (Med.)" << endl;
-        my_buffer << string(63, '-') << endl;
-        for (auto studentas : studentai)
-        {
-            my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << setw(17) << fixed
-                      << setprecision(2) << studentas.galutinis_vid << studentas.galutinis_med << endl;
-        }
-        open_of << my_buffer.str();
-        cout << "Duomenys isvesti i Rezultatai.txt faila." << endl;
-    }
     my_buffer.clear();
 }
 
-void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
+void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
+{
+    stringstream my_buffer;
+    ofstream fo(rez_failas);
+    my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
+              << "Galutinis (Vid.) Galutinis (Med.)" << endl;
+    my_buffer << string(63, '-') << endl;
+    for (auto studentas : studentai)
+    {
+        my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << setw(17) << fixed
+                  << setprecision(2) << studentas.galutinis_vid << studentas.galutinis_med << endl;
+    }
+    fo << my_buffer.str();
+    // cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
+    fo.close();
+    my_buffer.clear();
+    studentai.clear();
+    studentai.shrink_to_fit();
+}
+
+void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
 {
     int pazymiu_kiekis = -3;
 
     stringstream my_buffer;
-    ifstream open_if(failo_vardas);
-    try
-    {
-        if (open_if.fail())
-            throw runtime_error("Nepavyko atidaryti duomenu failo.");
-    }
-    catch (exception &ex)
-    {
-        cout << ex.what();
-        exit(0);
-    }
-    my_buffer << open_if.rdbuf();
-    open_if.close();
+    ifstream fi(ivesties_failas);
+
+    my_buffer << fi.rdbuf();
+    fi.close();
 
     string zodis;
     while (zodis != "Egz.")
@@ -188,7 +186,6 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
         studentai.push_back(s);
     }
     RusiuotiStudentusPagalPavarde(studentai);
-    Isvedimas(studentai, "");
 }
 
 void RankinisIvedimas(vector<Studentas> &studentai)
@@ -222,7 +219,7 @@ void RankinisIvedimas(vector<Studentas> &studentai)
         {
             s.galutinis_med = MedianosApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
         }
-        Isvedimas(studentai, "m");
+        IsvedimasIKonsole(studentai, "m");
     }
     else
     {
@@ -230,6 +227,42 @@ void RankinisIvedimas(vector<Studentas> &studentai)
         {
             s.galutinis_vid = VidurkioApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
         }
-        Isvedimas(studentai, "v");
+        IsvedimasIKonsole(studentai, "v");
     }
+}
+
+void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studentas> &vargsiukai, vector<Studentas> &moksliukai)
+{
+    for (auto &s : studentai)
+    {
+        if (s.galutinis_vid < 5.00 && s.galutinis_med < 5.00)
+            vargsiukai.push_back(s);
+        else
+            moksliukai.push_back(s);
+    }
+    studentai.clear();
+    studentai.shrink_to_fit();
+}
+
+void GeneruotiDuomenuFaila(int studentu_kiekis, int nd_kiekis)
+{
+    stringstream my_buffer;
+    ofstream fo("studentai" + to_string(studentu_kiekis) + ".txt");
+    int (*genpazPtr)() = GeneruotiPazymi;
+
+    my_buffer << "Vardas" << setw(10) << "Pavarde";
+    for (int i = 0; i < nd_kiekis; i++)
+        my_buffer << setw(10) << "ND" << i + 1;
+    my_buffer << setw(10) << "Egz." << endl;
+
+    for (int i = 0; i < studentu_kiekis; i++)
+    {
+        my_buffer << "Vardas" << i + 1 << setw(10) << "Pavarde" << i + 1;
+        for (int j = 0; j < nd_kiekis + 1; j++)
+            my_buffer << setw(10) << genpazPtr();
+        my_buffer << endl;
+    }
+    fo << my_buffer.str();
+    my_buffer.clear();
+    fo.close();
 }

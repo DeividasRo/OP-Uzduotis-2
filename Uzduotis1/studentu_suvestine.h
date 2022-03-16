@@ -5,10 +5,21 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
-#include <numeric>
-#include <algorithm>
 #include <fstream>
-using namespace std;
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::ifstream;
+using std::left;
+using std::ofstream;
+using std::setprecision;
+using std::setw;
+using std::string;
+using std::stringstream;
+using std::to_string;
+using std::vector;
 
 struct Studentas
 {
@@ -23,7 +34,10 @@ bool YraSveikasisSkaicius(string);
 int TinkamoSveikojoSkaiciausIvedimas();
 bool LygintiPagalPavardeDidejanciai(Studentas, Studentas);
 void RusiuotiStudentusPagalPavarde(vector<Studentas> &);
-void Isvedimas(vector<Studentas>, string);
+void IsvedimasIKonsole(vector<Studentas>, string);
+void IsvedimasIFaila(vector<Studentas> &, string);
 void StudentoIvedimas(Studentas &);
 void SkaitymasIsFailo(vector<Studentas> &, string);
 void RankinisIvedimas(vector<Studentas> &);
+void GeneruotiDuomenuFaila(int, int);
+void PadalintiStudentusKategorijomis(vector<Studentas> &, vector<Studentas> &, vector<Studentas> &);
