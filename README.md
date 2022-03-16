@@ -38,6 +38,8 @@
 
 -Automatiškai generuojami vartotojo nustatyto dydžio studentų irašų duomenų failai.
 
--Duomenų failo generavimo, apdorojimo ir išvedimo laikas matuojamas ir išvedamas komandinėje eilutėje. 
+-Duomenų failo generavimo, apdorojimo ir išvedimo laikas matuojamas ir išvedamas komandinėje eilutėje:
+
+![image](https://user-images.githubusercontent.com/99316667/158587079-75147900-505f-47ae-8e60-902c2170be5c.png)
 
 
