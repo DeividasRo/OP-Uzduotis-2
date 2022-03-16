@@ -6,7 +6,20 @@
 #include <vector>
 #include <stdlib.h>
 #include <fstream>
-using namespace std;
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::ifstream;
+using std::left;
+using std::ofstream;
+using std::setprecision;
+using std::setw;
+using std::string;
+using std::stringstream;
+using std::to_string;
+using std::vector;
 
 struct Studentas
 {
@@ -22,9 +35,9 @@ int TinkamoSveikojoSkaiciausIvedimas();
 bool LygintiPagalPavardeDidejanciai(Studentas, Studentas);
 void RusiuotiStudentusPagalPavarde(vector<Studentas> &);
 void IsvedimasIKonsole(vector<Studentas>, string);
-void IsvedimasIFaila(vector<Studentas>, string);
+void IsvedimasIFaila(vector<Studentas> &, string);
 void StudentoIvedimas(Studentas &);
 void SkaitymasIsFailo(vector<Studentas> &, string);
 void RankinisIvedimas(vector<Studentas> &);
 void GeneruotiDuomenuFaila(int, int);
-void PadalintiStudentusKategorijomis(vector<Studentas>, vector<Studentas> &, vector<Studentas> &);
+void PadalintiStudentusKategorijomis(vector<Studentas> &, vector<Studentas> &, vector<Studentas> &);

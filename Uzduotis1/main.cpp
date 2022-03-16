@@ -3,37 +3,75 @@
 int main()
 {
 	vector<Studentas> studentai, vargsiukai, moksliukai;
-	cout << "Pasirinkite duomenu ivedimo buda: " << endl;
-	cout << "0 - skaitymas is failo" << endl;
-	cout << "1 - rankinis ivedimas" << endl;
-	int x = 0;
-	cin >> x;
-	if (x == 1)
-		RankinisIvedimas(studentai);
-	else
+	duration<double> diff;
+	int x;
+	while (true)
 	{
-		cout << "Iveskite norimu sugeneruoti duomenu failu namu darbu kiekius." << endl;
-		cout << "1000 studentu failo nd kiekis: ";
+		cout << "\nPasirinkite norima atlikti veiksma: " << endl;
+		cout << "0 - rankinis duomenu ivedimas" << endl;
+		cout << "1 - generuoti duomenu faila" << endl;
+		cout << "2 - isvesti apdorotus duomenis i failus" << endl;
+		cout << "3 - isvesti apdorotus duomenis i failus" << endl;
 		cin >> x;
-		GeneruotiDuomenuFaila(1000, x);
-		cout << "10000 studentu failo nd kiekis: ";
-		cin >> x;
-		GeneruotiDuomenuFaila(10000, x);
-		cout << "100000 studentu failo nd kiekis: ";
-		cin >> x;
-		GeneruotiDuomenuFaila(100000, x);
-		cout << "1000000 studentu failo nd kiekis: ";
-		cin >> x;
-		GeneruotiDuomenuFaila(1000000, x);
-		cout << "10000000 studentu failo nd kiekis: ";
-		cin >> x;
-		GeneruotiDuomenuFaila(10000000, x);
-		SkaitymasIsFailo(studentai, "studentai10000000.txt");
-		PadalintiStudentusKategorijomis(studentai, vargsiukai, moksliukai);
+		if (x == 0)
+			RankinisIvedimas(studentai);
+		else if (x == 1)
+		{
+			cout << "Iveskite norimu sugeneruoti duomenu failu namu darbu kieki." << endl;
+			cin >> x;
+			if (x > 0)
+			{
+				for (int i = 1000; i <= 10000000; i *= 10)
+				{
+					auto start = high_resolution_clock::now();
+					GeneruotiDuomenuFaila(i, x);
+					auto end = high_resolution_clock::now();
+					diff = end - start;
+					cout << i << " studentu failo kurimo laikas: " << diff.count() << " s" << endl;
+				}
+			}
+		}
+		else if (x == 2)
+		{
+			using namespace std::chrono;
+			for (int i = 1000; i <= 10000000; i *= 10)
+			{
+				auto full_start = high_resolution_clock::now();
+				cout << endl;
 
-		IsvedimasIFaila(vargsiukai, "vargsiukai.txt");
-		IsvedimasIFaila(moksliukai, "moksliukai.txt");
+				auto start = high_resolution_clock::now();
+				SkaitymasIsFailo(studentai, "studentai" + to_string(i) + ".txt");
+				auto end = high_resolution_clock::now();
+				diff = end - start;
+				cout << i << " studentu duomenu nuskaitymo is failo laikas: " << diff.count() << " s" << endl;
+
+				start = high_resolution_clock::now();
+				PadalintiStudentusKategorijomis(studentai, vargsiukai, moksliukai);
+				end = high_resolution_clock::now();
+				diff = end - start;
+				cout << i << " studentu  dalijimo i dvi kategorijas laikas: " << diff.count() << " s" << endl;
+
+				start = high_resolution_clock::now();
+				IsvedimasIFaila(vargsiukai, "vargsiukai" + to_string(i) + ".txt");
+				cout << i << " studentu isvedimo i vargsiukai.txt faila laikas: " << diff.count() << " s" << endl;
+				end = high_resolution_clock::now();
+				diff = end - start;
+
+				start = high_resolution_clock::now();
+				IsvedimasIFaila(moksliukai, "moksliukai" + to_string(i) + ".txt");
+				end = high_resolution_clock::now();
+				diff = end - start;
+				cout << i << " studentu isvedimo i moksliukai.txt faila laikas: " << diff.count() << " s" << endl;
+
+				auto full_end = high_resolution_clock::now();
+				diff = full_end - full_start;
+				cout << i << " studentu testavimo bendras laikas: " << diff.count() << " s" << endl;
+			}
+		}
+		else
+			break;
 	}
 
 	system("pause");
+	return 0;
 }

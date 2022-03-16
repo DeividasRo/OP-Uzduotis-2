@@ -130,7 +130,7 @@ void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
     my_buffer.clear();
 }
 
-void IsvedimasIFaila(vector<Studentas> studentai, string rez_failas)
+void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
 {
     stringstream my_buffer;
     ofstream fo(rez_failas);
@@ -143,9 +143,11 @@ void IsvedimasIFaila(vector<Studentas> studentai, string rez_failas)
                   << setprecision(2) << studentas.galutinis_vid << studentas.galutinis_med << endl;
     }
     fo << my_buffer.str();
-    cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
+    // cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
     fo.close();
     my_buffer.clear();
+    studentai.clear();
+    studentai.shrink_to_fit();
 }
 
 void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
@@ -157,9 +159,9 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
     try
     {
         if (fi.fail())
-            throw runtime_error("Nepavyko atidaryti duomenu failo.");
+            throw std::runtime_error("Nepavyko atidaryti duomenu failo.");
     }
-    catch (exception &ex)
+    catch (std::exception &ex)
     {
         cout << ex.what();
         exit(0);
@@ -238,7 +240,7 @@ void RankinisIvedimas(vector<Studentas> &studentai)
     }
 }
 
-void PadalintiStudentusKategorijomis(vector<Studentas> studentai, vector<Studentas> &vargsiukai, vector<Studentas> &moksliukai)
+void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studentas> &vargsiukai, vector<Studentas> &moksliukai)
 {
     for (auto &s : studentai)
     {
@@ -247,6 +249,7 @@ void PadalintiStudentusKategorijomis(vector<Studentas> studentai, vector<Student
         else
             moksliukai.push_back(s);
     }
+    studentai.clear();
     studentai.shrink_to_fit();
 }
 
@@ -269,5 +272,6 @@ void GeneruotiDuomenuFaila(int studentu_kiekis, int nd_kiekis)
         my_buffer << endl;
     }
     fo << my_buffer.str();
+    my_buffer.clear();
     fo.close();
 }
