@@ -151,22 +151,12 @@ void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
     studentai.shrink_to_fit();
 }
 
-void SkaitymasIsFailo(vector<Studentas> &studentai, string failo_vardas)
+void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
 {
     int pazymiu_kiekis = -3;
 
     stringstream my_buffer;
-    ifstream fi(failo_vardas);
-    try
-    {
-        if (fi.fail())
-            throw std::runtime_error("Nepavyko atidaryti duomenu failo.");
-    }
-    catch (std::exception &ex)
-    {
-        cout << ex.what();
-        exit(0);
-    }
+    ifstream fi(ivesties_failas);
 
     my_buffer << fi.rdbuf();
     fi.close();
