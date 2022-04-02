@@ -24,14 +24,22 @@ int TinkamoSveikojoSkaiciausIvedimas()
     return stoi(s);
 }
 
-bool LygintiPagalPavardeDidejanciai(Studentas a, Studentas b)
+void RusiuotiPagalPavardeDidejanciai(deque<Studentas> &studentai)
 {
-    return a.pavarde < b.pavarde;
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.pavarde < b.pavarde; });
 }
 
-void RusiuotiStudentusPagalPavarde(vector<Studentas> &studentai)
+void RusiuotiPagalVidurkiDidejanciai(deque<Studentas> &studentai)
 {
-    sort(studentai.begin(), studentai.end(), LygintiPagalPavardeDidejanciai);
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.galutinis_vid < b.galutinis_vid; });
+}
+
+void RusiuotiPagalVidurkiMazejanciai(deque<Studentas> &studentai)
+{
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.galutinis_vid > b.galutinis_vid; });
 }
 
 void StudentoIvedimas(Studentas &s)
@@ -97,7 +105,7 @@ void StudentoIvedimas(Studentas &s)
     }
 }
 
-void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
+void IsvedimasIKonsole(deque<Studentas> studentai, string galutinis_budas)
 {
     stringstream my_buffer;
     if (galutinis_budas == "v")
@@ -131,17 +139,18 @@ void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
     my_buffer.clear();
 }
 
-void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
+void IsvedimasIFaila(deque<Studentas> &studentai, string rez_failas)
 {
     stringstream my_buffer;
     ofstream fo(rez_failas);
+    // RusiuotiPagalPavardeDidejanciai(studentai);
     my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
-              << "Galutinis (Vid.) Galutinis (Med.)" << endl;
+              << "Galutinis (Vid.)" << endl;
     my_buffer << string(63, '-') << endl;
     for (auto studentas : studentai)
     {
         my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << setw(17) << fixed
-                  << setprecision(2) << studentas.galutinis_vid << studentas.galutinis_med << endl;
+                  << setprecision(2) << studentas.galutinis_vid << endl;
     }
     fo << my_buffer.str();
     // cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
@@ -151,7 +160,7 @@ void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
     studentai.shrink_to_fit();
 }
 
-void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
+void SkaitymasIsFailo(deque<Studentas> &studentai, string ivesties_failas)
 {
     int pazymiu_kiekis = -3;
 
@@ -168,27 +177,24 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
         pazymiu_kiekis++;
     }
 
-    while (my_buffer)
+    int paz;
+    while (!my_buffer.eof())
     {
         Studentas s;
         my_buffer >> s.vardas >> s.pavarde;
-        if (s.vardas == "" && s.pavarde == "")
-            break;
         for (int i = 0; i < pazymiu_kiekis; i++)
         {
-            int paz;
             my_buffer >> paz;
             s.nd.push_back(paz);
         }
         my_buffer >> s.egz;
-        s.galutinis_med = MedianosApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
         s.galutinis_vid = VidurkioApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
         studentai.push_back(s);
     }
-    RusiuotiStudentusPagalPavarde(studentai);
+    my_buffer.clear();
 }
 
-void RankinisIvedimas(vector<Studentas> &studentai)
+void RankinisIvedimas(deque<Studentas> &studentai)
 {
     string skaiciavimo_budas = "v";
     string testi_ivedima = "t";
@@ -200,7 +206,7 @@ void RankinisIvedimas(vector<Studentas> &studentai)
         cout << "\nJei norite prideti dar viena studenta, irasykite 't': ";
         cin >> testi_ivedima;
     }
-    RusiuotiStudentusPagalPavarde(studentai);
+    RusiuotiPagalPavardeDidejanciai(studentai);
 
     cout << "\nKokiu budu apskaiciuoti galutini bala?" << endl;
     cout << "v - Vidurkis" << endl;
@@ -231,15 +237,18 @@ void RankinisIvedimas(vector<Studentas> &studentai)
     }
 }
 
-void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studentas> &vargsiukai, vector<Studentas> &moksliukai)
+void PadalintiStudentusKategorijomis(deque<Studentas> &studentai, deque<Studentas> &vargsiukai, deque<Studentas> &moksliukai)
 {
-    for (auto &s : studentai)
-    {
-        if (s.galutinis_vid < 5.00 && s.galutinis_med < 5.00)
-            vargsiukai.push_back(s);
-        else
-            moksliukai.push_back(s);
-    }
+    RusiuotiPagalVidurkiDidejanciai(studentai);
+    auto it_u = upper_bound(studentai.begin(), studentai.end(), 5.00, [](double val, const Studentas &s)
+                            { return s.galutinis_vid >= val; });
+
+    vargsiukai = {studentai.begin(), it_u};
+
+    studentai.erase(studentai.begin(), it_u);
+
+    moksliukai = studentai;
+
     studentai.clear();
     studentai.shrink_to_fit();
 }
@@ -247,20 +256,22 @@ void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studen
 void GeneruotiDuomenuFaila(int studentu_kiekis, int nd_kiekis)
 {
     stringstream my_buffer;
-    ofstream fo("studentai" + to_string(studentu_kiekis) + ".txt");
-    int (*genpazPtr)() = GeneruotiPazymi;
+    ofstream fo("st" + to_string(studentu_kiekis) + ".txt");
+    int (*genPaz)() = &GeneruotiPazymi;
 
-    my_buffer << "Vardas" << setw(10) << "Pavarde";
+    my_buffer << "Vardas" << setw(12) << "Pavarde ";
     for (int i = 0; i < nd_kiekis; i++)
-        my_buffer << setw(10) << "ND" << i + 1;
-    my_buffer << setw(10) << "Egz." << endl;
+        my_buffer << setw(9) << "ND" << i + 1;
+    my_buffer << setw(10) << "Egz."
+              << "\n";
 
     for (int i = 0; i < studentu_kiekis; i++)
     {
         my_buffer << "Vardas" << i + 1 << setw(10) << "Pavarde" << i + 1;
         for (int j = 0; j < nd_kiekis + 1; j++)
-            my_buffer << setw(10) << genpazPtr();
-        my_buffer << endl;
+            my_buffer << setw(10) << genPaz();
+        if (i != studentu_kiekis - 1)
+            my_buffer << "\n";
     }
     fo << my_buffer.str();
     my_buffer.clear();

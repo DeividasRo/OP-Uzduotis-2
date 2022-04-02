@@ -42,4 +42,16 @@
 
 ![image](https://user-images.githubusercontent.com/99316667/158587079-75147900-505f-47ae-8e60-902c2170be5c.png)
 
+## VERSIJA 0.5
+
+-Ištestuotas programos duomenų skaitymo bei skirstymo į kategorijas laikas naudojant tris skirtingus konteinerius - **vector**, **list** ir **deque**.
+
+### Rezultatai
+| Vector | List | Deque |
+|--------|------|-------|
+|![vector](https://user-images.githubusercontent.com/99316667/161387405-a304549b-a034-4260-aec3-11c2aa9dee69.png)|![list](https://user-images.githubusercontent.com/99316667/161387432-93a468f3-76cc-45e7-b484-18ea5428f9e3.png)|![deque](https://user-images.githubusercontent.com/99316667/161387436-242d0d77-021d-42ee-bfc2-42409aa3224b.png)|
+
+### Sistemos parametrai
+![specs](https://user-images.githubusercontent.com/99316667/161387499-d852a60b-95ac-47c4-aeca-5a3768fa49e0.png)
+
 

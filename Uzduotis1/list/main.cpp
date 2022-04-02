@@ -2,16 +2,16 @@
 
 int main()
 {
-	vector<Studentas> studentai, vargsiukai, moksliukai;
+	list<Studentas> studentai, vargsiukai, moksliukai;
 	duration<double> diff;
 	int x;
 	while (true)
 	{
 		cout << "\nPasirinkite norima atlikti veiksma: " << endl;
+		cout << "0 - uzbaigti programos veikima" << endl;
 		cout << "1 - rankinis duomenu ivedimas" << endl;
 		cout << "2 - generuoti duomenu failus" << endl;
 		cout << "3 - isvesti apdorotus duomenis i failus" << endl;
-		cout << "<betkoks skaicius> - uzbaigti programos veikima" << endl;
 		x = TinkamoSveikojoSkaiciausIvedimas();
 		if (x == 1)
 			RankinisIvedimas(studentai);
@@ -40,12 +40,16 @@ int main()
 		}
 		else if (x == 3)
 		{
-			string ivesties_failas;
+			string ivesties_failas, ivesties_failo_pav;
 			int stud_kiekis = 0;
 			while (true)
 			{
 				cout << "\nIveskite norimo apdoroti duomenu failo varda: ";
-				cin >> ivesties_failas;
+				cin >> ivesties_failo_pav;
+				if (ivesties_failo_pav.substr(ivesties_failo_pav.length() - 4, 4) != ".txt") // galimybe ivesti failo varda be .txt pletinio
+					ivesties_failas = ivesties_failo_pav + ".txt";
+				else
+					ivesties_failas = ivesties_failo_pav;
 				ifstream fi(ivesties_failas);
 				try
 				{
@@ -57,7 +61,7 @@ int main()
 					cout << ex.what();
 					break;
 				}
-				stud_kiekis = stoi(ivesties_failas.substr(9, ivesties_failas.length() - 9));
+				stud_kiekis = stoi(ivesties_failas.substr(2, ivesties_failas.length() - 2));
 
 				auto full_start = high_resolution_clock::now();
 				cout << endl;
@@ -74,6 +78,7 @@ int main()
 				diff = end - start;
 				cout << stud_kiekis << " studentu dalijimo i dvi kategorijas laikas: " << diff.count() << " s\n";
 
+				/*
 				start = high_resolution_clock::now();
 				IsvedimasIFaila(vargsiukai, "vargsiukai" + to_string(stud_kiekis) + ".txt");
 				end = high_resolution_clock::now();
@@ -85,6 +90,7 @@ int main()
 				end = high_resolution_clock::now();
 				diff = end - start;
 				cout << stud_kiekis << " studentu isvedimo i moksliukai.txt faila laikas: " << diff.count() << " s\n";
+				*/
 
 				auto full_end = high_resolution_clock::now();
 				diff = full_end - full_start;

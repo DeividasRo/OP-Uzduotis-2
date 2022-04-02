@@ -6,6 +6,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <fstream>
+#include <algorithm>
 
 using std::cin;
 using std::cout;
@@ -32,8 +33,9 @@ struct Studentas
 
 bool YraSveikasisSkaicius(string);
 int TinkamoSveikojoSkaiciausIvedimas();
-bool LygintiPagalPavardeDidejanciai(Studentas, Studentas);
-void RusiuotiStudentusPagalPavarde(vector<Studentas> &);
+void RusiuotiPagalPavardeDidejanciai(vector<Studentas> &);
+void RusiuotiPagalVidurkiDidejanciai(vector<Studentas> &);
+void RusiuotiPagalVidurkiMazejanciai(vector<Studentas> &);
 void IsvedimasIKonsole(vector<Studentas>, string);
 void IsvedimasIFaila(vector<Studentas> &, string);
 void StudentoIvedimas(Studentas &);
