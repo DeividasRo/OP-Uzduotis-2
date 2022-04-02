@@ -49,7 +49,7 @@
 ### Rezultatai
 | Vector | List | Deque |
 |--------|------|-------|
-|![vector](https://user-images.githubusercontent.com/99316667/161388116-8cd18f86-f88b-4eb0-b868-e1d13f618fdc.png)|![list](https://user-images.githubusercontent.com/99316667/161387432-93a468f3-76cc-45e7-b484-18ea5428f9e3.png)|![deque](https://user-images.githubusercontent.com/99316667/161388127-5352f276-2f5c-414f-bcc8-e03d1d373633.png)|
+|![vector](https://user-images.githubusercontent.com/99316667/161388116-8cd18f86-f88b-4eb0-b868-e1d13f618fdc.png)|![list](https://user-images.githubusercontent.com/99316667/161388334-db976e2d-079a-4f2b-ad56-852f8423e447.png)|![deque](https://user-images.githubusercontent.com/99316667/161388127-5352f276-2f5c-414f-bcc8-e03d1d373633.png)|
 
 ### Sistemos parametrai
 ![specs](https://user-images.githubusercontent.com/99316667/161387499-d852a60b-95ac-47c4-aeca-5a3768fa49e0.png)
