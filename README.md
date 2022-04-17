@@ -90,12 +90,13 @@ Vektorius nerikiuojamas visiškai iš eilės pagal galutinį vidurkį, o element
 
 ## NAUDOJIMO INSTRUKCIJA
 
-1. Galima susikurti projekto failus pagal CMakeLists.txt
-2. Programa turi kelias pagrindines opcijas:  
+1. Yra trys aplankai su skirtingai realizuotu tuo pačiu projektu - vector, list ir deque
+2. Galima susikurti projekto failus pagal CMakeLists.txt
+3. Programa turi kelias pagrindines opcijas:  
 a) Rankinis duomenų įvedimas ir rezultatų išvedimas komandinėje eilutėje  
 b) Automatinis duomenų failų generavimas į formatą "st<nurodytas_studentu_kiekis>.txt"  
 c) Sugeneruotų duomenų failų rezultatų išvedimas į atskirus failus bei programos spartos analizė
-3. Kiekvienas žingsnis reikalaujantis vartotojo atsako yra aiškiai aprašytas programos vykdymo eigoje.
+4. Kiekvienas žingsnis reikalaujantis vartotojo atsako yra aiškiai aprašytas programos vykdymo eigoje.
 
 
 
