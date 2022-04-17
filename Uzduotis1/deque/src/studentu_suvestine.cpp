@@ -24,22 +24,22 @@ int TinkamoSveikojoSkaiciausIvedimas()
     return stoi(s);
 }
 
-void RusiuotiPagalPavardeDidejanciai(list<Studentas> &studentai)
+void RusiuotiPagalPavardeDidejanciai(deque<Studentas> &studentai)
 {
-    studentai.sort([](const Studentas &a, const Studentas &b)
-                   { return a.pavarde < b.pavarde; });
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.pavarde < b.pavarde; });
 }
 
-void RusiuotiPagalVidurkiDidejanciai(list<Studentas> &studentai)
+void RusiuotiPagalVidurkiDidejanciai(deque<Studentas> &studentai)
 {
-    studentai.sort([](const Studentas &a, const Studentas &b)
-                   { return a.galutinis_vid < b.galutinis_vid; });
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.galutinis_vid > b.galutinis_vid; });
 }
 
-void RusiuotiPagalVidurkiMazejanciai(list<Studentas> &studentai)
+void RusiuotiPagalVidurkiMazejanciai(deque<Studentas> &studentai)
 {
-    studentai.sort([](const Studentas &a, const Studentas &b)
-                   { return a.galutinis_vid > b.galutinis_vid; });
+    sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
+         { return a.galutinis_vid < b.galutinis_vid; });
 }
 
 void StudentoIvedimas(Studentas &s)
@@ -98,14 +98,14 @@ void StudentoIvedimas(Studentas &s)
         for (int i = 0; i < x; i++)
         {
             s.nd.push_back(GeneruotiPazymi());
-            cout << s.nd.back() << " ";
+            cout << s.nd[i] << " ";
         }
         s.egz = GeneruotiPazymi();
         cout << "\nEgzaminas: " << s.egz << endl;
     }
 }
 
-void IsvedimasIKonsole(list<Studentas> studentai, string galutinis_budas)
+void IsvedimasIKonsole(deque<Studentas> studentai, string galutinis_budas)
 {
     stringstream my_buffer;
     if (galutinis_budas == "v")
@@ -139,7 +139,7 @@ void IsvedimasIKonsole(list<Studentas> studentai, string galutinis_budas)
     my_buffer.clear();
 }
 
-void IsvedimasIFaila(list<Studentas> &studentai, string rez_failas)
+void IsvedimasIFaila(deque<Studentas> &studentai, string rez_failas)
 {
     stringstream my_buffer;
     ofstream fo(rez_failas);
@@ -157,9 +157,10 @@ void IsvedimasIFaila(list<Studentas> &studentai, string rez_failas)
     fo.close();
     my_buffer.clear();
     studentai.clear();
+    studentai.shrink_to_fit();
 }
 
-void SkaitymasIsFailo(list<Studentas> &studentai, string ivesties_failas)
+void SkaitymasIsFailo(deque<Studentas> &studentai, string ivesties_failas)
 {
     int pazymiu_kiekis = -3;
 
@@ -193,7 +194,7 @@ void SkaitymasIsFailo(list<Studentas> &studentai, string ivesties_failas)
     my_buffer.clear();
 }
 
-void RankinisIvedimas(list<Studentas> &studentai)
+void RankinisIvedimas(deque<Studentas> &studentai)
 {
     string skaiciavimo_budas = "v";
     string testi_ivedima = "t";
@@ -236,19 +237,46 @@ void RankinisIvedimas(list<Studentas> &studentai)
     }
 }
 
-void PadalintiStudentusKategorijomis(list<Studentas> &studentai, list<Studentas> &vargsiukai, list<Studentas> &moksliukai)
+void PadalintiStudentusKategorijomis(deque<Studentas> &studentai, deque<Studentas> &vargsiukai, deque<Studentas> &moksliukai)
 {
-    RusiuotiPagalVidurkiDidejanciai(studentai);
+    // STRATEGIJA1:
+    /*
+        for (auto &s : studentai)
+        {
+            if (s.galutinis_vid < 5.00)
+                vargsiukai.push_back(s);
+            else
+                moksliukai.push_back(s);
+        }
+    */
+    // STRATEGIJA2:
+    /*
+      for (auto it = studentai.begin(); it != studentai.end();)
+      {
+          if ((*it).galutinis_vid < 5.00)
+          {
+              vargsiukai.push_back(*it);
+              iter_swap(it, next(studentai.end(), -1));
+              studentai.pop_back();
+          }
+          else
+              it++;
+      }
+    */
+    // MANO:
+
+    RusiuotiPagalVidurkiMazejanciai(studentai);
     auto it_u = upper_bound(studentai.begin(), studentai.end(), 5.00, [](double val, const Studentas &s)
                             { return s.galutinis_vid >= val; });
 
-    vargsiukai = {studentai.begin(), it_u};
+    moksliukai = {it_u, studentai.end()};
 
-    studentai.erase(studentai.begin(), it_u);
+    studentai.resize(studentai.size() - moksliukai.size());
 
-    moksliukai = studentai;
+    vargsiukai = studentai;
 
     studentai.clear();
+    studentai.shrink_to_fit();
 }
 
 void GeneruotiDuomenuFaila(int studentu_kiekis, int nd_kiekis)

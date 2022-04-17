@@ -15,14 +15,13 @@ using std::endl;
 using std::fixed;
 using std::ifstream;
 using std::left;
-using std::list;
+using std::next;
 using std::ofstream;
 using std::setprecision;
 using std::setw;
 using std::string;
 using std::stringstream;
 using std::to_string;
-using std::vector;
 
 struct Studentas
 {

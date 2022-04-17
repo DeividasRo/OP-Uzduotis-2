@@ -33,13 +33,13 @@ void RusiuotiPagalPavardeDidejanciai(vector<Studentas> &studentai)
 void RusiuotiPagalVidurkiDidejanciai(vector<Studentas> &studentai)
 {
     sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
-         { return a.galutinis_vid < b.galutinis_vid; });
+         { return a.galutinis_vid > b.galutinis_vid; });
 }
 
 void RusiuotiPagalVidurkiMazejanciai(vector<Studentas> &studentai)
 {
     sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
-         { return a.galutinis_vid > b.galutinis_vid; });
+         { return a.galutinis_vid < b.galutinis_vid; });
 }
 
 void StudentoIvedimas(Studentas &s)
@@ -239,15 +239,43 @@ void RankinisIvedimas(vector<Studentas> &studentai)
 
 void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studentas> &vargsiukai, vector<Studentas> &moksliukai)
 {
-    RusiuotiPagalVidurkiDidejanciai(studentai);
+    // STRATEGIJA1:
+    /*
+        for (auto &s : studentai)
+        {
+            if (s.galutinis_vid < 5.00)
+                vargsiukai.push_back(s);
+            else
+                moksliukai.push_back(s);
+        }
+    */
+    // STRATEGIJA2:
+    /*
+        for (auto it = studentai.begin(); it != studentai.end();)
+        {
+            if ((*it).galutinis_vid < 5.00)
+            {
+                vargsiukai.push_back(*it);
+                iter_swap(it, next(studentai.end(), -1));
+                studentai.pop_back();
+            }
+            else
+                it++;
+        }
+    */
+    // MANO:
+
+    // RusiuotiPagalVidurkiMazejanciai(studentai);
+    partition(studentai.begin(), studentai.end(), [](const Studentas &s)
+              { return s.galutinis_vid < 5.00; });
     auto it_u = upper_bound(studentai.begin(), studentai.end(), 5.00, [](double val, const Studentas &s)
                             { return s.galutinis_vid >= val; });
 
-    vargsiukai = {studentai.begin(), it_u};
+    moksliukai = {it_u, studentai.end()};
 
-    studentai.erase(studentai.begin(), it_u);
+    studentai.resize(studentai.size() - moksliukai.size());
 
-    moksliukai = studentai;
+    vargsiukai = studentai;
 
     studentai.clear();
     studentai.shrink_to_fit();

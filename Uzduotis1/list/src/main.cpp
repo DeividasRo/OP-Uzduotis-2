@@ -78,7 +78,6 @@ int main()
 				diff = end - start;
 				cout << stud_kiekis << " studentu dalijimo i dvi kategorijas laikas: " << diff.count() << " s\n";
 
-				/*
 				start = high_resolution_clock::now();
 				IsvedimasIFaila(vargsiukai, "vargsiukai" + to_string(stud_kiekis) + ".txt");
 				end = high_resolution_clock::now();
@@ -86,11 +85,13 @@ int main()
 				cout << stud_kiekis << " studentu isvedimo i vargsiukai.txt faila laikas: " << diff.count() << " s\n";
 
 				start = high_resolution_clock::now();
-				IsvedimasIFaila(moksliukai, "moksliukai" + to_string(stud_kiekis) + ".txt");
+				if (!moksliukai.empty())
+					IsvedimasIFaila(moksliukai, "moksliukai" + to_string(stud_kiekis) + ".txt");
+				else
+					IsvedimasIFaila(studentai, "moksliukai" + to_string(stud_kiekis) + ".txt");
 				end = high_resolution_clock::now();
 				diff = end - start;
 				cout << stud_kiekis << " studentu isvedimo i moksliukai.txt faila laikas: " << diff.count() << " s\n";
-				*/
 
 				auto full_end = high_resolution_clock::now();
 				diff = full_end - full_start;

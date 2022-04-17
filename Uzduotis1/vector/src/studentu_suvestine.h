@@ -3,18 +3,19 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <vector>
 #include <stdlib.h>
 #include <fstream>
 #include <algorithm>
-#include <deque>
 
 using std::cin;
 using std::cout;
-using std::deque;
 using std::endl;
 using std::fixed;
 using std::ifstream;
+using std::iter_swap;
 using std::left;
+using std::next;
 using std::ofstream;
 using std::setprecision;
 using std::setw;
@@ -25,7 +26,7 @@ using std::to_string;
 struct Studentas
 {
     string vardas, pavarde;
-    deque<int> nd;
+    vector<int> nd;
     int egz = 0;
     double galutinis_vid = 0;
     double galutinis_med = 0;
@@ -33,13 +34,13 @@ struct Studentas
 
 bool YraSveikasisSkaicius(string);
 int TinkamoSveikojoSkaiciausIvedimas();
-void RusiuotiPagalPavardeDidejanciai(deque<Studentas> &);
-void RusiuotiPagalVidurkiDidejanciai(deque<Studentas> &);
-void RusiuotiPagalVidurkiMazejanciai(deque<Studentas> &);
-void IsvedimasIKonsole(deque<Studentas>, string);
-void IsvedimasIFaila(deque<Studentas> &, string);
+void RusiuotiPagalPavardeDidejanciai(vector<Studentas> &);
+void RusiuotiPagalVidurkiDidejanciai(vector<Studentas> &);
+void RusiuotiPagalVidurkiMazejanciai(vector<Studentas> &);
+void IsvedimasIKonsole(vector<Studentas>, string);
+void IsvedimasIFaila(vector<Studentas> &, string);
 void StudentoIvedimas(Studentas &);
-void SkaitymasIsFailo(deque<Studentas> &, string);
-void RankinisIvedimas(deque<Studentas> &);
+void SkaitymasIsFailo(vector<Studentas> &, string);
+void RankinisIvedimas(vector<Studentas> &);
 void GeneruotiDuomenuFaila(int, int);
-void PadalintiStudentusKategorijomis(deque<Studentas> &, deque<Studentas> &, deque<Studentas> &);
+void PadalintiStudentusKategorijomis(vector<Studentas> &, vector<Studentas> &, vector<Studentas> &);
