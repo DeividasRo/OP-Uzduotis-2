@@ -91,7 +91,7 @@ Vektorius nerikiuojamas visiškai iš eilės pagal galutinį vidurkį, o element
 ## NAUDOJIMO INSTRUKCIJA
 
 1. Yra trys aplankai su skirtingai realizuotu tuo pačiu projektu - vector, list ir deque
-2. Galima susikurti projekto failus pagal CMakeLists.txt
+2. Makefile pagalba galima susigeneruoti .exe failą komandinėje eilutėje įvedus "make"
 3. Programa turi kelias pagrindines opcijas:  
 a) Rankinis duomenų įvedimas ir rezultatų išvedimas komandinėje eilutėje  
 b) Automatinis duomenų failų generavimas į formatą "st<nurodytas_studentu_kiekis>.txt"  
