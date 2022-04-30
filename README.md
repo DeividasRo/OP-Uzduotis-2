@@ -85,10 +85,10 @@ Studentai išrūšiuojami pagal galutinį vidurkį, tuomet randamas paskutinio s
 Vektorius nerikiuojamas visiškai iš eilės pagal galutinį vidurkį, o elementai tik "sumėtomi" atsitiktine tvarka į dvi atskiras puses - mažesnę nei 5.00 ir ne mažesnę nei 5.00.
 
 | Sort | Partition |
-|--------|------|
+|------|-----------|
 |![vector_strat3](https://user-images.githubusercontent.com/99316667/163709942-9ebe0056-5463-4e3d-8d90-672e25d56157.png)|![vector_optimized](https://user-images.githubusercontent.com/99316667/163709944-7ae95663-5d05-4748-9191-df33b4f1b0f0.png)|
 
-## NAUDOJIMO INSTRUKCIJA
+### NAUDOJIMO INSTRUKCIJA
 
 1. Yra trys aplankai su skirtingai realizuotu tuo pačiu projektu - vector, list ir deque
 2. Makefile pagalba galima susigeneruoti .exe failą komandinėje eilutėje įvedus "make"
@@ -97,6 +97,22 @@ a) Rankinis duomenų įvedimas ir rezultatų išvedimas komandinėje eilutėje
 b) Automatinis duomenų failų generavimas į formatą "st<nurodytas_studentu_kiekis>.txt"  
 c) Sugeneruotų duomenų failų rezultatų išvedimas į atskirus failus bei programos spartos analizė
 4. Kiekvienas žingsnis reikalaujantis vartotojo atsako yra aiškiai aprašytas programos vykdymo eigoje.
+
+## VERSIJA 1.1
+
+Pakeitus Studento struktūrą į klasę, programos veikimo sparta beveik visiškai nepasikeitė.
+
+| Struct | Class |
+|--------|-------|
+|![image](https://user-images.githubusercontent.com/99316667/166121690-018ea1ff-5e41-4d36-81e0-330d95cd8707.png)|![vector_class_test](https://user-images.githubusercontent.com/99316667/166121604-f8eb37c1-511d-48e9-86be-c1ac875ea3fa.png)|
+
+Ištestuoti trys skirtingi kompiliatoriaus optimizavimo lygio *flagai* - O1, O2 ir O3. Visi jie paspartino programos veikimą, tačiau žemiausio lygio *flagas* buvo sparčiausias. Visgi ženklaus skirtumo tarp jų, testuojant 100.000 ir 1.000.000 dydžio studentų failus, nepastebėta.
+
+| O1 | O2 | O3 |
+|----|----|----|
+|![O1_vector](https://user-images.githubusercontent.com/99316667/166121819-3ec06291-f634-411b-a5bf-2f5b5772f60f.png)|![O2_vector](https://user-images.githubusercontent.com/99316667/166121821-00b52c46-7b7e-4b7d-9332-b4d83759aa79.png)|![O3_vector](https://user-images.githubusercontent.com/99316667/166121822-de7f22e7-2940-430e-a036-8c6705e3ba5a.png)|
+
+
 
 
 
