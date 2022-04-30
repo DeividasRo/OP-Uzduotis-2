@@ -1,4 +1,4 @@
-#include "studentu_suvestine.h"
+#include "studentas.h"
 
 int main()
 {

@@ -1,4 +1,4 @@
-#include "studentu_suvestine.h"
+#include "studentas.h"
 
 bool YraSveikasisSkaicius(string x) // tikrina ar visi eilutes simboliai yra skaitmenys
 {
@@ -27,27 +27,30 @@ int TinkamoSveikojoSkaiciausIvedimas()
 void RusiuotiPagalPavardeDidejanciai(vector<Studentas> &studentai)
 {
     sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
-         { return a.pavarde < b.pavarde; });
+         { return a.Pavarde() < b.Pavarde(); });
 }
 
 void RusiuotiPagalVidurkiDidejanciai(vector<Studentas> &studentai)
 {
     sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
-         { return a.galutinis_vid > b.galutinis_vid; });
+         { return a.GalutinisVid() > b.GalutinisVid(); });
 }
 
 void RusiuotiPagalVidurkiMazejanciai(vector<Studentas> &studentai)
 {
     sort(studentai.begin(), studentai.end(), [](const Studentas &a, const Studentas &b)
-         { return a.galutinis_vid < b.galutinis_vid; });
+         { return a.GalutinisVid() < b.GalutinisVid(); });
 }
 
 void StudentoIvedimas(Studentas &s)
 {
+    string zodis;
     cout << "Iveskite varda: ";
-    cin >> s.vardas;
+    cin >> zodis;
+    s.SetVardas(zodis);
     cout << "Iveskite pavarde: ";
-    cin >> s.pavarde;
+    cin >> zodis;
+    s.SetPavarde(zodis);
 
     int x = -1;
     cout << "Pasirinkite pazymiu ivedimo buda: " << endl;
@@ -64,11 +67,11 @@ void StudentoIvedimas(Studentas &s)
         cout << "\nSuveskite namu darbu pazymius. (Noredami nutraukti ivedima, iveskite neigiama arba didesni uz 10 skaiciu)" << endl;
         while (true)
         {
-            cout << "Iveskite " << s.nd.size() + 1 << " pazymi: ";
+            cout << "Iveskite " << s.ND().size() + 1 << " pazymi: ";
             x = TinkamoSveikojoSkaiciausIvedimas();
             if (x >= 0 && x <= 10)
-                s.nd.push_back(x);
-            else if (s.nd.size() != 0)
+                s.PushToND(x);
+            else if (s.ND().size() != 0)
                 break;
         }
         cout << "Iveskite gauta egzamino rezultata: ";
@@ -82,7 +85,7 @@ void StudentoIvedimas(Studentas &s)
             else
                 break;
         }
-        s.egz = x;
+        s.SetEgzaminas(x);
     }
     else // pazymiu generavimas
     {
@@ -97,11 +100,11 @@ void StudentoIvedimas(Studentas &s)
         cout << "Pazymiai: ";
         for (int i = 0; i < x; i++)
         {
-            s.nd.push_back(GeneruotiPazymi());
-            cout << s.nd[i] << " ";
+            s.PushToND(GeneruotiPazymi());
+            cout << s.ND()[i] << " ";
         }
-        s.egz = GeneruotiPazymi();
-        cout << "\nEgzaminas: " << s.egz << endl;
+        s.SetEgzaminas(GeneruotiPazymi());
+        cout << "\nEgzaminas: " << s.Egzaminas() << endl;
     }
 }
 
@@ -116,8 +119,8 @@ void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
         my_buffer << string(45, '-') << endl;
         for (auto studentas : studentai)
         {
-            my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << fixed
-                      << setprecision(2) << studentas.galutinis_vid << endl;
+            my_buffer << left << setw(15) << studentas.Pavarde() << setw(15) << studentas.Vardas() << fixed
+                      << setprecision(2) << studentas.GalutinisVid() << endl;
         }
         cout << my_buffer.str();
     }
@@ -130,8 +133,8 @@ void IsvedimasIKonsole(vector<Studentas> studentai, string galutinis_budas)
 
         for (auto studentas : studentai)
         {
-            my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << fixed
-                      << setprecision(2) << studentas.galutinis_med << endl;
+            my_buffer << left << setw(15) << studentas.Pavarde() << setw(15) << studentas.Vardas() << fixed
+                      << setprecision(2) << studentas.GalutinisMed() << endl;
         }
 
         cout << my_buffer.str();
@@ -149,8 +152,8 @@ void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
     my_buffer << string(63, '-') << endl;
     for (auto studentas : studentai)
     {
-        my_buffer << left << setw(15) << studentas.pavarde << setw(15) << studentas.vardas << setw(17) << fixed
-                  << setprecision(2) << studentas.galutinis_vid << endl;
+        my_buffer << left << setw(15) << studentas.Pavarde() << setw(15) << studentas.Vardas() << setw(17) << fixed
+                  << setprecision(2) << studentas.GalutinisVid() << endl;
     }
     fo << my_buffer.str();
     // cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
@@ -180,15 +183,19 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
     int paz;
     while (!my_buffer.eof())
     {
-        Studentas s;
-        my_buffer >> s.vardas >> s.pavarde;
+        Studentas s = Studentas();
+        my_buffer >> zodis;
+        s.SetVardas(zodis);
+        my_buffer >> zodis;
+        s.SetPavarde(zodis);
         for (int i = 0; i < pazymiu_kiekis; i++)
         {
             my_buffer >> paz;
-            s.nd.push_back(paz);
+            s.PushToND(paz);
         }
-        my_buffer >> s.egz;
-        s.galutinis_vid = VidurkioApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
+        my_buffer >> paz;
+        s.SetEgzaminas(paz);
+        s.SetGalutinisVid(VidurkioApskaiciavimas(s.ND()) * 0.4 + s.Egzaminas() * 0.6);
         studentai.push_back(s);
     }
     my_buffer.clear();
@@ -223,7 +230,7 @@ void RankinisIvedimas(vector<Studentas> &studentai)
     {
         for (auto &s : studentai)
         {
-            s.galutinis_med = MedianosApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
+            s.SetGalutinisMed(MedianosApskaiciavimas(s.ND()) * 0.4 + s.Egzaminas() * 0.6);
         }
         IsvedimasIKonsole(studentai, "m");
     }
@@ -231,7 +238,7 @@ void RankinisIvedimas(vector<Studentas> &studentai)
     {
         for (auto &s : studentai)
         {
-            s.galutinis_vid = VidurkioApskaiciavimas(s.nd) * 0.4 + s.egz * 0.6;
+            s.SetGalutinisMed(VidurkioApskaiciavimas(s.ND()) * 0.4 + s.Egzaminas() * 0.6);
         }
         IsvedimasIKonsole(studentai, "v");
     }
@@ -267,9 +274,9 @@ void PadalintiStudentusKategorijomis(vector<Studentas> &studentai, vector<Studen
 
     // RusiuotiPagalVidurkiMazejanciai(studentai);
     partition(studentai.begin(), studentai.end(), [](const Studentas &s)
-              { return s.galutinis_vid < 5.00; });
+              { return s.GalutinisVid() < 5.00; });
     auto it_u = upper_bound(studentai.begin(), studentai.end(), 5.00, [](double val, const Studentas &s)
-                            { return s.galutinis_vid >= val; });
+                            { return s.GalutinisVid() >= val; });
 
     moksliukai = {it_u, studentai.end()};
 

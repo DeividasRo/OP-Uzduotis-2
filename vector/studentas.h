@@ -23,13 +23,32 @@ using std::string;
 using std::stringstream;
 using std::to_string;
 
-struct Studentas
+class Studentas
 {
-    string vardas, pavarde;
-    vector<int> nd;
-    int egz = 0;
-    double galutinis_vid = 0;
-    double galutinis_med = 0;
+private:
+    string vardas_;
+    string pavarde_;
+    vector<int> nd_;
+    int egzaminas_;
+    double galutinis_vid_;
+    double galutinis_med_;
+
+public:
+    Studentas() : egzaminas_(0), galutinis_vid_(0), galutinis_med_(0) {}
+    // setters
+    inline void SetVardas(string var) { vardas_ = var; }
+    inline void SetPavarde(string pav) { pavarde_ = pav; }
+    inline void SetEgzaminas(int egz) { egzaminas_ = egz; }
+    inline double SetGalutinisVid(double vid) { return galutinis_vid_ = vid; }
+    inline double SetGalutinisMed(double med) { return galutinis_med_ = med; }
+    inline void PushToND(int paz) { return nd_.push_back(paz); }
+    // getters
+    inline string Vardas() const { return vardas_; }
+    inline string Pavarde() const { return pavarde_; }
+    inline int Egzaminas() const { return egzaminas_; }
+    inline double GalutinisVid() const { return galutinis_vid_; }
+    inline double GalutinisMed() const { return galutinis_med_; }
+    inline vector<int> ND() const { return nd_; }
 };
 
 bool YraSveikasisSkaicius(string);
