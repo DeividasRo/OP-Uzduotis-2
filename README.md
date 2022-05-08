@@ -112,7 +112,9 @@ Ištestuoti trys skirtingi kompiliatoriaus optimizavimo lygio *flagai* - O1, O2 
 |----|----|----|
 |![O1_vector](https://user-images.githubusercontent.com/99316667/166121819-3ec06291-f634-411b-a5bf-2f5b5772f60f.png)|![O2_vector](https://user-images.githubusercontent.com/99316667/166121821-00b52c46-7b7e-4b7d-9332-b4d83759aa79.png)|![O3_vector](https://user-images.githubusercontent.com/99316667/166121822-de7f22e7-2940-430e-a036-8c6705e3ba5a.png)|
 
+## VERSIJA 1.1
 
+Pridėtas Rule of Three operatorius vieno Studento objekto duomenų priskyrimui kitam Studentui.
 
 
 
