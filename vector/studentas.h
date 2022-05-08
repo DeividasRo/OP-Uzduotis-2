@@ -35,6 +35,56 @@ private:
 
 public:
     Studentas() : egzaminas_(0), galutinis_vid_(0), galutinis_med_(0) {}
+
+    // copy constructor
+    Studentas(const Studentas &s)
+    {
+        vardas_ = s.vardas_;
+        pavarde_ = s.pavarde_;
+        galutinis_med_ = s.galutinis_med_;
+        galutinis_vid_ = s.galutinis_vid_;
+        egzaminas_ = s.egzaminas_;
+        nd_ = s.nd_;
+    }
+
+    // assignment constructor
+    Studentas operator=(const Studentas &s)
+    {
+        if (this == &s)
+            return *this;
+        vardas_ = s.vardas_;
+        pavarde_ = s.pavarde_;
+        galutinis_med_ = s.galutinis_med_;
+        galutinis_vid_ = s.galutinis_vid_;
+        egzaminas_ = s.egzaminas_;
+        nd_ = s.nd_;
+        return *this;
+    }
+
+    // destructor
+    ~Studentas()
+    {
+        nd_.clear();
+        nd_.shrink_to_fit();
+    }
+
+    void ReadData(stringstream &buffer, int paz_kiek)
+    {
+        string vardas, pavarde;
+        int pazymys;
+        buffer >> vardas >> pavarde;
+        SetVardas(vardas);
+        SetPavarde(pavarde);
+        for (int i = 0; i < paz_kiek; i++)
+        {
+            buffer >> pazymys;
+            PushToND(pazymys);
+        }
+        buffer >> pazymys;
+        SetEgzaminas(pazymys);
+        SetGalutinisVid(VidurkioApskaiciavimas(ND()) * 0.4 + Egzaminas() * 0.6);
+    }
+
     // setters
     inline void SetVardas(string var) { vardas_ = var; }
     inline void SetPavarde(string pav) { pavarde_ = pav; }
