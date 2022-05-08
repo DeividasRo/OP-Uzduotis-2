@@ -68,7 +68,7 @@ public:
         nd_.shrink_to_fit();
     }
 
-    // skaito duomenis is bufferio
+
     void ReadData(stringstream &buffer, int paz_kiek)
     {
         string vardas, pavarde;
