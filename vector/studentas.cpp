@@ -179,23 +179,14 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
         my_buffer >> zodis;
         pazymiu_kiekis++;
     }
+    if (pazymiu_kiekis < 1)
+        return;
 
     int paz;
     while (!my_buffer.eof())
     {
         Studentas s = Studentas();
-        my_buffer >> zodis;
-        s.SetVardas(zodis);
-        my_buffer >> zodis;
-        s.SetPavarde(zodis);
-        for (int i = 0; i < pazymiu_kiekis; i++)
-        {
-            my_buffer >> paz;
-            s.PushToND(paz);
-        }
-        my_buffer >> paz;
-        s.SetEgzaminas(paz);
-        s.SetGalutinisVid(VidurkioApskaiciavimas(s.ND()) * 0.4 + s.Egzaminas() * 0.6);
+        s.ReadData(my_buffer, pazymiu_kiekis);
         studentai.push_back(s);
     }
     my_buffer.clear();
