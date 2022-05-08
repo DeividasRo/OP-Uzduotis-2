@@ -68,6 +68,7 @@ public:
         nd_.shrink_to_fit();
     }
 
+
     void ReadData(stringstream &buffer, int paz_kiek)
     {
         string vardas, pavarde;
