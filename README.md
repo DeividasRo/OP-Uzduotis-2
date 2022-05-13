@@ -116,5 +116,8 @@ Ištestuoti trys skirtingi kompiliatoriaus optimizavimo lygio *flagai* - O1, O2 
 
 Pridėtas *Rule of Three* operatorius vieno Studento objekto duomenų priskyrimui kitam Studentui.
 
+## VERSIJA 1.5
+
+Sukurta abstrakčioji bazinė klasė **Zmogus** ir iš jo derivinta klasė **Studentas**.
 
 
