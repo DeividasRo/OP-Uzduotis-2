@@ -1,5 +1,7 @@
 #include "studentas.h"
 
+int Studentas::pazymiu_kiekis = 0;
+
 bool YraSveikasisSkaicius(string x) // tikrina ar visi eilutes simboliai yra skaitmenys
 {
     if (!isdigit(x[0]) && x[0] != '-')
@@ -101,7 +103,7 @@ void StudentoIvedimas(Studentas &s)
         for (int i = 0; i < x; i++)
         {
             s.PushToND(GeneruotiPazymi());
-            cout << s.ND()[i] << " ";
+            cout << s.ND(i) << " ";
         }
         s.SetEgzaminas(GeneruotiPazymi());
         cout << "\nEgzaminas: " << s.Egzaminas() << endl;
@@ -150,10 +152,9 @@ void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
     my_buffer << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15)
               << "Galutinis (Vid.)" << endl;
     my_buffer << string(63, '-') << endl;
-    for (auto studentas : studentai)
+    for (auto s : studentai)
     {
-        my_buffer << left << setw(15) << studentas.Pavarde() << setw(15) << studentas.Vardas() << setw(17) << fixed
-                  << setprecision(2) << studentas.GalutinisVid() << endl;
+        my_buffer << s;
     }
     fo << my_buffer.str();
     // cout << "Duomenys isvesti i " << rez_failas << " faila." << endl;
@@ -165,7 +166,7 @@ void IsvedimasIFaila(vector<Studentas> &studentai, string rez_failas)
 
 void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
 {
-    int pazymiu_kiekis = -3;
+    int paz_kiek = -3;
 
     stringstream my_buffer;
     ifstream fi(ivesties_failas);
@@ -177,18 +178,20 @@ void SkaitymasIsFailo(vector<Studentas> &studentai, string ivesties_failas)
     while (zodis != "Egz.")
     {
         my_buffer >> zodis;
-        pazymiu_kiekis++;
+        paz_kiek++;
     }
-    if (pazymiu_kiekis < 1)
+    if (paz_kiek < 1)
         return;
 
-    int paz;
+    Studentas::pazymiu_kiekis = paz_kiek;
+
     while (!my_buffer.eof())
     {
         Studentas s = Studentas();
-        s.ReadData(my_buffer, pazymiu_kiekis);
+        my_buffer >> s;
         studentai.push_back(s);
     }
+
     my_buffer.clear();
 }
 

@@ -1,3 +1,6 @@
+#ifndef STUDENTAS_H
+#define STUDENTAS_H
+
 #include "skaiciavimai.h"
 #include <iostream>
 #include <iomanip>
@@ -13,27 +16,41 @@ using std::cout;
 using std::endl;
 using std::fixed;
 using std::ifstream;
+using std::istream;
 using std::iter_swap;
 using std::left;
 using std::next;
 using std::ofstream;
+using std::ostream;
 using std::setprecision;
 using std::setw;
 using std::string;
 using std::stringstream;
 using std::to_string;
 
-class Studentas
+class Zmogus
 {
-private:
+protected:
     string vardas_;
     string pavarde_;
+
+public:
+    inline void SetVardas(string var) { vardas_ = var; }
+    inline void SetPavarde(string pav) { pavarde_ = pav; }
+    virtual inline string Vardas() const = 0;
+    virtual inline string Pavarde() const = 0;
+};
+
+class Studentas : public Zmogus
+{
+private:
     vector<int> nd_;
     int egzaminas_;
     double galutinis_vid_;
     double galutinis_med_;
 
 public:
+    static int pazymiu_kiekis;
     Studentas() : egzaminas_(0), galutinis_vid_(0), galutinis_med_(0) {}
 
     // copy constructor
@@ -68,31 +85,33 @@ public:
         nd_.shrink_to_fit();
     }
 
-
-    void ReadData(stringstream &buffer, int paz_kiek)
+    friend istream &operator>>(istream &in, Studentas &s)
     {
-        string vardas, pavarde;
-        int pazymys;
-        buffer >> vardas >> pavarde;
-        SetVardas(vardas);
-        SetPavarde(pavarde);
-        for (int i = 0; i < paz_kiek; i++)
+        in >> s.vardas_ >> s.pavarde_;
+        for (int i = 0; i < s.pazymiu_kiekis; i++)
         {
-            buffer >> pazymys;
-            PushToND(pazymys);
-        }
-        buffer >> pazymys;
-        SetEgzaminas(pazymys);
-        SetGalutinisVid(VidurkioApskaiciavimas(ND()) * 0.4 + Egzaminas() * 0.6);
+            int paz;
+            in >> paz;
+            s.nd_.push_back(paz);
+        };
+        in >> s.egzaminas_;
+        s.SetGalutinisVid(VidurkioApskaiciavimas(s.ND()) * 0.4 + s.Egzaminas() * 0.6);
+        return in;
+    }
+
+    friend ostream &operator<<(ostream &out, Studentas const &s)
+    {
+        out << left << setw(15) << s.Pavarde() << setw(15) << s.Vardas() << setw(17) << fixed
+            << setprecision(2) << s.GalutinisVid() << endl;
+        return out;
     }
 
     // setters
-    inline void SetVardas(string var) { vardas_ = var; }
-    inline void SetPavarde(string pav) { pavarde_ = pav; }
     inline void SetEgzaminas(int egz) { egzaminas_ = egz; }
-    inline double SetGalutinisVid(double vid) { return galutinis_vid_ = vid; }
-    inline double SetGalutinisMed(double med) { return galutinis_med_ = med; }
-    inline void PushToND(int paz) { return nd_.push_back(paz); }
+    inline void SetGalutinisVid(double vid) { galutinis_vid_ = vid; }
+    inline void SetGalutinisMed(double med) { galutinis_med_ = med; }
+    inline void PushToND(int paz) { nd_.push_back(paz); }
+    inline void static SetPazKiek(int kiek) { pazymiu_kiekis = kiek; }
     // getters
     inline string Vardas() const { return vardas_; }
     inline string Pavarde() const { return pavarde_; }
@@ -100,6 +119,7 @@ public:
     inline double GalutinisVid() const { return galutinis_vid_; }
     inline double GalutinisMed() const { return galutinis_med_; }
     inline vector<int> ND() const { return nd_; }
+    inline int ND(int i) const { return nd_[i]; }
 };
 
 bool YraSveikasisSkaicius(string);
@@ -114,3 +134,5 @@ void SkaitymasIsFailo(vector<Studentas> &, string);
 void RankinisIvedimas(vector<Studentas> &);
 void GeneruotiDuomenuFaila(int, int);
 void PadalintiStudentusKategorijomis(vector<Studentas> &, vector<Studentas> &, vector<Studentas> &);
+
+#endif
