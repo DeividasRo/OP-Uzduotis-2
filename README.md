@@ -122,6 +122,6 @@ Sukurta abstrakčioji bazinė klasė **Zmogus** ir iš jo derivinta klasė **Stu
 
 ## VERSIJA 2.0
 
-Sukonfigūruota Doxygen programos dokumentacija.
+Sukonfigūruota programos Doxygen dokumentacija. Atlikti Unit testai panaudojant Google Test tipo projektą.
 
 
