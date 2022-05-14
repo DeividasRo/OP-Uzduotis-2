@@ -120,4 +120,8 @@ Pridėtas *Rule of Three* operatorius vieno Studento objekto duomenų priskyrimu
 
 Sukurta abstrakčioji bazinė klasė **Zmogus** ir iš jo derivinta klasė **Studentas**.
 
+## VERSIJA 2.0
+
+Sukonfigūruota Doxygen programos dokumentacija.
+
 
